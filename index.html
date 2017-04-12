@@ -39,13 +39,13 @@
 </header>
 
 <section id="glowna" ng-app="appWyszukiwarka" ng-cloak>
-	<div class="container"  ng-controller="szukajKontroler">
+	<div class="container"  ng-controller="searchController">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
-				<form class="form-inline" ng-submit="Wyszukaj()">
+				<form class="form-inline" ng-submit="search()">
 					<div class="form-group">
 						<label for="szukaj">Wpisz coś:</label>
-						<input type="text" id="szukaj" name="szukaj" class="form-control" ng-model="poleSzukaj" ng-click="showSuggestions($event)" ng-focus="widac = true" ng-change="Wyszukaj();count=0">
+						<input type="text" id="szukaj" name="szukaj" class="form-control" ng-model="searchField" ng-click="showSuggestions($event)" ng-focus="widac = true" ng-change="search();count=0">
 					</div>
 					
 					<button type="submit" name="go" class="btn btn-info" ng-click="widac=false; count=1" ng-init="count=0">Szukaj</button>
@@ -56,7 +56,7 @@
 		<div class="row" ng-show="isShowSuggestionFlagTrue()">
 			<div class="col-md-12">
 				<ul class="nav nav-pills nav-stacked">
-					<li ng-repeat="wynik in dane"><a href="" ng-click="szukajWiecej(wynik.title)">{{wynik.extract | limitTo: 150}}<span ng-if="wynik.extract.length > 150">&hellip;</span></a></li>
+					<li ng-repeat="wynik in dataObj"><a href="" ng-click="searchMore(wynik.title)">{{wynik.extract | limitTo: 150}}<span ng-if="wynik.extract.length > 150">&hellip;</span></a></li>
 				</ul>
 				
 			</div>
@@ -64,7 +64,7 @@
 		
 		<div class="row" ng-if="!widac || (count==1)">
 			<div class="col-md-12">
-				<article ng-repeat="wynik in dane">
+				<article ng-repeat="wynik in dataObj">
 				<img class="obrazek img-responsive" ng-src="{{wynik.original.source}}">
 
 				<div class="tresc">

@@ -7,25 +7,25 @@ var app = angular.module('appWyszukiwarka', ['ngSanitize']).config(function($sce
 		  ]);
 		});
 
-		app.controller('szukajKontroler', ['$scope', '$http', '$document', function(scope, http, document){
+		app.controller('searchController', ['$scope', '$http', '$document', function(scope, http, document){
 
 			var showSugestionsFlag;
 
 			scope.showSugestionsFlag = false;
 			scope.showSuggestions = showSuggestions;
-			scope.szukajWiecej = szukajWiecej;
-			scope.Wyszukaj = Wyszukaj;
+			scope.searchMore = searchMore;
+			scope.search = search;
 			scope.isShowSuggestionFlagTrue = isShowSuggestionFlagTrue;
 
 
-			function szukajWiecej (czego) {
-				scope.poleSzukaj = czego;
+			function searchMore (title) {
+				scope.searchField = title;
 			}
 
-			function Wyszukaj () {
-				var ileZnakow = scope.poleSzukaj.length;
+			function search () {
+				var charCount = scope.searchField.length;
 												
-				if (ileZnakow > 1)	{
+				if (charCount > 1)	{
 				
 					var ua = window.navigator.userAgent;
 					
@@ -41,7 +41,7 @@ var app = angular.module('appWyszukiwarka', ['ngSanitize']).config(function($sce
 				            prop: 'extracts|pageimages|images|info',
 				            piprop: "original",
 				            generator: 'search',
-		                    gsrsearch: 'intitle:'+scope.poleSzukaj,
+		                    gsrsearch: 'intitle:'+scope.searchField,
 		                    pilimit: 'max',
 		                    redirects: '',
 		                    exchars: 2500,
@@ -54,17 +54,17 @@ var app = angular.module('appWyszukiwarka', ['ngSanitize']).config(function($sce
 					}).then(function(response) {
 						console.log(response);
 					    if(!response.data.query) {
-					    	scope.dane ='';
+					    	scope.dataObj ='';
 					    } else {
-					    	scope.dane = response.data.query.pages;
+					    	scope.dataObj = response.data.query.pages;
 					    }
-					    console.log(scope.dane);
+					    console.log(scope.dataObj);
 					}, function errorCallback(response){
 						console.log(response);
 					});
 
 				} else {
-					scope.dane = '';
+					scope.dataObj = '';
 				}
 			}
 
