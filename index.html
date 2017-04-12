@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Zadanie Wikipedia - angular - wyszukiwarka</title>
+	<meta charset="utf-8">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Latest compiled and minified JavaScript -->
+	<style type="text/css">
+		html, body{
+		  width: 100%;
+		  height: 100%;
+		}
+		article {
+			background-color: #FFF8DC;
+			border-radius: 10px;
+			margin-bottom: 15px;
+			padding: 7px;
+			position: relative;
+		}
+		.row {
+			margin-top: 20px;
+		}
+		img.obrazek {
+			max-width: 200px;
+			margin: 0 5px 0 0;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+	<div class="jumbotron">
+		<h2>Zadanie</h2>
+	</div>
+</div>
+</header>
+
+<section id="glowna" ng-app="appWyszukiwarka" ng-cloak>
+	<div class="container"  ng-controller="szukajKontroler">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<form class="form-inline" ng-submit="Wyszukaj()">
+					<div class="form-group">
+						<label for="szukaj">Wpisz coś:</label>
+						<input type="text" id="szukaj" name="szukaj" class="form-control" ng-model="poleSzukaj" ng-click="showSuggestions($event)" ng-focus="widac = true" ng-change="Wyszukaj();count=0">
+					</div>
+					
+					<button type="submit" name="go" class="btn btn-info" ng-click="widac=false; count=1" ng-init="count=0">Szukaj</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="row" ng-show="isShowSuggestionFlagTrue()">
+			<div class="col-md-12">
+				<ul class="nav nav-pills nav-stacked">
+					<li ng-repeat="wynik in dane"><a href="" ng-click="szukajWiecej(wynik.title)">{{wynik.extract | limitTo: 150}}<span ng-if="wynik.extract.length > 150">&hellip;</span></a></li>
+				</ul>
+				
+			</div>
+		</div>
+		
+		<div class="row" ng-if="!widac || (count==1)">
+			<div class="col-md-12">
+				<article ng-repeat="wynik in dane">
+				<img class="obrazek img-responsive" ng-src="{{wynik.original.source}}">
+
+				<div class="tresc">
+					{{wynik.extract | limitTo: 2500}}<span ng-if="wynik.extract.length > 2500">&hellip;</span>
+				</div>
+				<p><a class="pull-right" href="{{wynik.fullurl}}" target="_blank">Czytaj więcej</a></p>
+				<p style="clear: both;"> 
+			</article>
+			</div>
+		</div>
+
+
+
+	</div>
+</section>
+
+<footer>
+	
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.3/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.4/angular-sanitize.min.js"></script>
+<script src="js/zadanie.min.js"></script>
+</body>
+</html>
